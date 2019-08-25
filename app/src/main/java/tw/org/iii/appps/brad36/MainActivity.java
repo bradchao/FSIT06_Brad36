@@ -18,12 +18,18 @@ public class MainActivity extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private MyListener myListener;
-    private MyListener2 myListener2;
+    private MyView myView;
+    private float viewW, viewH;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        myView = findViewById(R.id.myView);
+        viewW = getWindowManager().getDefaultDisplay().getWidth();
+        viewH = getWindowManager().getDefaultDisplay().getHeight();
+        Log.v("brad", viewW + "x" + viewH);
 
         sensorManager =
                 (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -34,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
                     ":" + sensor.getVendor());
         }
 
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        myListener = new MyListener(); myListener2 = new MyListener2();
-        sensorManager.registerListener(myListener, sensor, SensorManager.SENSOR_DELAY_NORMAL);
+        myListener = new MyListener();
+        sensorManager.registerListener(myListener, sensor, SensorManager.SENSOR_DELAY_UI);
     }
 
     @Override
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
             float[] values = sensorEvent.values;
+            changeBall((int)(values[0]*10),(int)(values[1]*10) ,(int)(values[2]*10));
         }
 
         @Override
@@ -64,22 +71,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class MyListener2 implements SensorEventListener2 {
+    private void changeBall(int x,int y, int z){
+        float xx = x*viewW/200 + viewW/2;
+        float yy = y*viewH/200 + viewH/2;
+        float zz = z - 50;
+        myView.setBallXY(xx,yy, zz);
 
-        @Override
-        public void onFlushCompleted(Sensor sensor) {
-
-        }
-
-        @Override
-        public void onSensorChanged(SensorEvent sensorEvent) {
-
-        }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int i) {
-
-        }
+        //Log.v("brad", "x = " + x + "; xx = " + xx);
     }
+
+
 
 }

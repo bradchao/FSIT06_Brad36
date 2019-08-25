@@ -9,7 +9,7 @@ import android.view.View;
 
 public class MyView extends View {
     private boolean isInit;
-    private float viewW, viewH, centerW, centerH, ballX, ballY;
+    private float viewW, viewH, centerW, centerH, ballX, ballY,ballR;
     private Paint paintLine, paintBall;
 
 
@@ -22,9 +22,11 @@ public class MyView extends View {
         viewW = getWidth(); viewH = getHeight();
         centerW = viewW / 2; centerH = viewH / 2;
         ballX = centerW; ballY = centerH;
+        ballR = 40;
 
         paintLine = new Paint(); paintLine.setColor(Color.RED); paintLine.setStrokeWidth(1);
         paintBall = new Paint(); paintBall.setColor(Color.YELLOW);
+        isInit = true;
     }
 
     @Override
@@ -32,15 +34,22 @@ public class MyView extends View {
         super.onDraw(canvas);
         if (!isInit) init();
 
-        canvas.drawCircle(ballX, ballY, 40, paintBall);
+        canvas.drawCircle(ballX, ballY, ballR, paintBall);
 
         canvas.drawLine(0, centerH, viewW, centerH, paintLine);
         canvas.drawLine(centerW, 0, centerW, viewH, paintLine);
 
     }
 
-    public void setBallXY(float x, float y){
-        ballX = x; ballY = y;
+    public float getW(){
+        return viewW;
+    }
+    public float getH(){
+        return viewH;
+    }
+
+    public void setBallXY(float x, float y, float z){
+        ballX = x; ballY = y; //ballR = z;
         invalidate();
     }
 
