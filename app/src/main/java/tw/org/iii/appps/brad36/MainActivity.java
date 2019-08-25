@@ -19,16 +19,11 @@ public class MainActivity extends AppCompatActivity {
     private Sensor sensor;
     private MyListener myListener;
     private MyListener2 myListener2;
-    private TextView x, y, z;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        x = findViewById(R.id.x);
-        y = findViewById(R.id.y);
-        z = findViewById(R.id.z);
 
         sensorManager =
                 (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -61,9 +56,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSensorChanged(SensorEvent sensorEvent) {
             float[] values = sensorEvent.values;
-            x.setText("X: " + (int)(values[0]));
-            y.setText("Y: " + (int)(values[1]));
-            z.setText("Z: " + (int)(values[2]));
         }
 
         @Override
